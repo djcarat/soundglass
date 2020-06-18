@@ -1,0 +1,7 @@
+import './window/window'
+import './window/menu'
+import './permissions'
+import './dialog'
+import './shortcuts'
+import './about'
+import './window/contextMenu'

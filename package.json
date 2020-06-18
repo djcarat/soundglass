@@ -1,0 +1,40 @@
+{
+  "name": "Soundglass",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Most Awesome Soundboard.",
+  "main": "./src/main/app.js",
+  "scripts": {
+    "dev": "nodemon --exec electron . --ext css,js,json,html",
+    "watch": "tsc --watch",
+    "test": "jest",
+    "build": "electron-builder"
+  },
+  "build": {
+    "appId": "soundglass",
+    "productName": "Soundglass",
+    "mac": {
+      "category": "public.app-category.entertainment",
+      "extendInfo": {
+        "NSCameraUsageDescription": "ASD",
+        "NSMicrophoneUsageDescription": "ASDASD"
+      }
+    }
+  },
+  "author": "pixl",
+  "license": "GPL-3.0-only",
+  "devDependencies": {
+    "@types/jest": "^26.0.0",
+    "@types/webrtc": "0.0.26",
+    "electron": "^9.0.4",
+    "electron-builder": "^22.7.0",
+    "electron-rebuild": "^1.11.0",
+    "jest": "^26.0.1",
+    "nodemon": "^2.0.4",
+    "ts-jest": "^26.1.0",
+    "typescript": "^3.9.5"
+  },
+  "dependencies": {
+    "glasstron": "0.0.3"
+  }
+}
