@@ -2,10 +2,8 @@ import { app, Menu, ipcMain, MenuItem } from "electron";
 import { win } from './window'
 import { openSoundFileDialog } from "../dialog";
 
-const isMac = process.platform === "darwin"
-
 const template = [
-    isMac ? {
+    {
         label: app.name,
         submenu: [
             { role: 'about' },
@@ -18,7 +16,7 @@ const template = [
             { type: 'separator' },
             { role: 'quit' },
         ]
-    } : {},
+    },
     {
         label: 'File',
         submenu: [
@@ -29,7 +27,6 @@ const template = [
             { type: 'separator' },
             { label: 'Load Config' },
             { type: 'separator' },
-            isMac ? { role: 'close' } : { role: 'quit' },
         ]
     },
     {
@@ -45,12 +42,8 @@ const template = [
         submenu: [
             { role: 'minimize' },
             { role: 'zoom' },
-            ...(isMac ? [
-              { type: 'separator' },
-              { role: 'front' },
-            ] : [
-              { role: 'close' }
-            ])
+            { type: 'separator' },
+            { role: 'front' },
           ]
     },
     {
@@ -58,27 +51,23 @@ const template = [
         submenu: [
             { label: 'Report an issue' },
             { role: 'reload' },
-        isMac ? { role: 'toggledevtools' } : { role: 'about' },
+            { role: 'toggledevtools' }
         ]
     },
 ]
 
 
 ipcMain.on('register-output-devices', (event, audioDevices: Array<string>) => {
-    let menuItem = registerDevices('output', audioDevices)
-
-    isMac ? menu.insert(2, menuItem) : menu.insert(1, menuItem)
-    Menu.setApplicationMenu(menu)
+    registerDevices('output', audioDevices)
 })
 
 ipcMain.on('register-input-devices', (event, audioDevices: Array<string>) => {
-    let menuItem = registerDevices('input', audioDevices)
-
-    isMac ? menu.insert(3, menuItem) : menu.insert(2, menuItem)
-    Menu.setApplicationMenu(menu)
+    registerDevices('input', audioDevices)
 })
 
 function registerDevices(type: string, audioDevices: Array<string>) {
+    if (process.platform != "darwin") return;
+
     let newSubmenu = []
 
     if (type === "input") {
@@ -105,9 +94,9 @@ function registerDevices(type: string, audioDevices: Array<string>) {
         submenu: newSubmenu
     })
 
-    return menuItem;
+    menu.insert(2, menuItem)
+    Menu.setApplicationMenu(menu)
 }
 
 //@ts-ignore
 let menu = Menu.buildFromTemplate(template);
-Menu.setApplicationMenu(menu);

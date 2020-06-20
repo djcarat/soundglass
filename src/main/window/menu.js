@@ -3,9 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const electron_1 = require("electron");
 const window_1 = require("./window");
 const dialog_1 = require("../dialog");
-const isMac = process.platform === "darwin";
 const template = [
-    isMac ? {
+    {
         label: electron_1.app.name,
         submenu: [
             { role: 'about' },
@@ -18,7 +17,7 @@ const template = [
             { type: 'separator' },
             { role: 'quit' },
         ]
-    } : {},
+    },
     {
         label: 'File',
         submenu: [
@@ -29,7 +28,6 @@ const template = [
             { type: 'separator' },
             { label: 'Load Config' },
             { type: 'separator' },
-            isMac ? { role: 'close' } : { role: 'quit' },
         ]
     },
     {
@@ -45,12 +43,8 @@ const template = [
         submenu: [
             { role: 'minimize' },
             { role: 'zoom' },
-            ...(isMac ? [
-                { type: 'separator' },
-                { role: 'front' },
-            ] : [
-                { role: 'close' }
-            ])
+            { type: 'separator' },
+            { role: 'front' },
         ]
     },
     {
@@ -58,21 +52,19 @@ const template = [
         submenu: [
             { label: 'Report an issue' },
             { role: 'reload' },
-            isMac ? { role: 'toggledevtools' } : { role: 'about' },
+            { role: 'toggledevtools' }
         ]
     },
 ];
 electron_1.ipcMain.on('register-output-devices', (event, audioDevices) => {
-    let menuItem = registerDevices('output', audioDevices);
-    isMac ? menu.insert(2, menuItem) : menu.insert(1, menuItem);
-    electron_1.Menu.setApplicationMenu(menu);
+    registerDevices('output', audioDevices);
 });
 electron_1.ipcMain.on('register-input-devices', (event, audioDevices) => {
-    let menuItem = registerDevices('input', audioDevices);
-    isMac ? menu.insert(3, menuItem) : menu.insert(2, menuItem);
-    electron_1.Menu.setApplicationMenu(menu);
+    registerDevices('input', audioDevices);
 });
 function registerDevices(type, audioDevices) {
+    if (process.platform != "darwin")
+        return;
     let newSubmenu = [];
     if (type === "input") {
         newSubmenu.push({
@@ -94,8 +86,8 @@ function registerDevices(type, audioDevices) {
         label: type.charAt(0).toUpperCase() + type.slice(1),
         submenu: newSubmenu
     });
-    return menuItem;
+    menu.insert(2, menuItem);
+    electron_1.Menu.setApplicationMenu(menu);
 }
 //@ts-ignore
 let menu = electron_1.Menu.buildFromTemplate(template);
-electron_1.Menu.setApplicationMenu(menu);

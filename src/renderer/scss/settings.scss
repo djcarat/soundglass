@@ -1,0 +1,100 @@
+#settingsContent {
+    width: 100vw;
+    transform: scale(0);
+    text-align: center;
+    padding-left: 75px;
+    padding-right: 75px;
+    height: 0;
+    opacity: 0;
+    transition: transform ease-in-out 0.2s, opacity ease-in-out 0.2s, height ease-in-out 0.2s;
+
+    .category {
+        width: 100%;
+        height: auto;
+        text-align: left;
+        border-left: 1px solid rgba(20, 20, 20, 0.8);
+        padding: 15px;
+
+        .desc {
+            font-size: 14px;
+            height: 18px;
+            width: 100%;
+            text-align: left;
+            display: inline-block;
+        }
+
+        &#output {
+            border-color: rgba(60, 60, 60, 0.8);
+        }
+        
+        &#input {
+            border-color: rgba(80, 80, 80, 0.8);
+        }
+
+        input[type="range"] {
+            appearance: none;
+            outline: none;
+            background-color: rgba(80, 80, 80, 0.8);
+            border-radius: 20px;
+            height: 5px;
+            cursor: pointer;
+        }
+        
+        select {
+            appearance: none;
+            outline: none;
+            padding: 5px;
+            background-color: rgba(40, 40, 40, 0.8);
+            border-radius: 3px;
+            border: none;
+            color: rgba(120, 120, 120, 0.8);
+            cursor: pointer;
+            transition: color ease-in-out 0.03s;
+
+            &:hover {
+                color: rgba(190, 190, 190, 0.9)
+            }
+        }
+
+        ::-webkit-slider-thumb {
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            border-radius: 20px;
+            background-color: rgba(120, 120, 120, 0.9);
+            cursor: pointer;
+
+            &:hover {
+                background-color: rgba(140, 140, 140, 0.9);
+            }
+        }
+    }
+
+    #credits {
+        color: rgb(120, 120, 120);
+        height: 25px;
+        width: 100%;
+        line-height: 27px;
+
+        .link {
+            cursor: pointer;
+            border-bottom: 1px solid transparent;
+            
+            &:hover {
+                border-image: linear-gradient(to right, rgb(39, 158, 255) , rgb(45, 48, 255));
+                border-image-slice: 1;
+            }
+        }
+    }
+
+    &.active {
+        opacity: 1;
+        height: 400px;
+        transform: scale(1);
+        padding-top: 15px;
+    }
+
+    h1 {
+        font-size: 22px;
+    }    
+}

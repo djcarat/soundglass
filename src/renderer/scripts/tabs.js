@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.setProgressLevel = exports.disableAllActiveTabs = exports.setAudioListeners = void 0;
+exports.setProgressLevel = exports.disableAllActiveTabs = exports.setAudioListeners = exports.toggleSettings = void 0;
 const electron_1 = require("electron");
 const renderer_1 = require("./renderer");
 electron_1.ipcRenderer.on('create-tab', (event, filePath) => createNewTab(filePath));
@@ -21,6 +21,20 @@ electron_1.ipcRenderer.on('global-shortcut-called', (event, shortcut) => {
         }
     }
 });
+function toggleSettings() {
+    let settingsIcon = document.getElementById('settings').getElementsByClassName('arrow')[0];
+    let settingsContent = document.getElementById('settingsContent');
+    if (!settingsContent.classList.contains('active')) {
+        settingsIcon.classList.add('up');
+        settingsIcon.classList.remove('down');
+    }
+    else {
+        settingsIcon.classList.remove('up');
+        settingsIcon.classList.add('down');
+    }
+    settingsContent.classList.toggle('active');
+}
+exports.toggleSettings = toggleSettings;
 function createNewTab(filePath) {
     let newTab = document.createElement('div');
     let tabList = document.getElementById('tabList');
@@ -29,6 +43,7 @@ function createNewTab(filePath) {
     <span class="shortcut">NONE</span>
     <div class="progress"></div>`;
     newTab.classList.add('tab');
+    newTab.classList.add('tab-popup');
     newTab.onclick = () => tabClick(newTab);
     newTab.getElementsByClassName('shortcut')[0].onclick = (event) => startRegisteringShortcut(event);
     tabList.appendChild(newTab);
@@ -102,7 +117,7 @@ function disableAllActiveTabs() {
 }
 exports.disableAllActiveTabs = disableAllActiveTabs;
 function setProgressLevel(progress) {
-    if (document.getElementsByClassName('active').length > 0)
+    if (document.getElementById('tabList').getElementsByClassName('active').length > 0)
         document.getElementsByClassName('active')[0].getElementsByClassName('progress')[0].style.width = progress;
 }
 exports.setProgressLevel = setProgressLevel;

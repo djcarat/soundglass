@@ -8,7 +8,8 @@
     "dev": "nodemon --exec electron . --ext css,js,json,html",
     "watch": "tsc --watch",
     "test": "jest",
-    "build": "electron-builder"
+    "build": "electron-builder",
+    "build-win": "electron-builder --win"
   },
   "build": {
     "appId": "soundglass",
@@ -16,8 +17,8 @@
     "mac": {
       "category": "public.app-category.entertainment",
       "extendInfo": {
-        "NSCameraUsageDescription": "ASD",
-        "NSMicrophoneUsageDescription": "ASDASD"
+        "NSCameraUsageDescription": "Camera is required.",
+        "NSMicrophoneUsageDescription": "Microphone permission is required if you want to stream your mic audio."
       }
     }
   },

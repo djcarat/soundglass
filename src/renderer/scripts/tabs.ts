@@ -24,6 +24,20 @@ ipcRenderer.on('global-shortcut-called', (event, shortcut: string) => {
     }
 })
 
+export function toggleSettings() {
+    let settingsIcon = document.getElementById('settings').getElementsByClassName('arrow')[0]
+    let settingsContent = document.getElementById('settingsContent')
+    
+    if (!settingsContent.classList.contains('active')) {
+        settingsIcon.classList.add('up')
+        settingsIcon.classList.remove('down')
+    } else {
+        settingsIcon.classList.remove('up')
+        settingsIcon.classList.add('down')
+    }
+    settingsContent.classList.toggle('active')
+}
+
 function createNewTab(filePath: string) {
     let newTab = document.createElement('div')
     let tabList = document.getElementById('tabList')
@@ -33,6 +47,7 @@ function createNewTab(filePath: string) {
     <span class="shortcut">NONE</span>
     <div class="progress"></div>`
     newTab.classList.add('tab')
+    newTab.classList.add('tab-popup')
     newTab.onclick = () => tabClick(newTab);
     (newTab.getElementsByClassName('shortcut')[0] as HTMLElement).onclick = (event) => startRegisteringShortcut(event)
     tabList.appendChild(newTab)
@@ -112,6 +127,6 @@ export function disableAllActiveTabs() {
 }
 
 export function setProgressLevel(progress: string) {
-    if (document.getElementsByClassName('active').length > 0)
+    if (document.getElementById('tabList').getElementsByClassName('active').length > 0)
     (document.getElementsByClassName('active')[0].getElementsByClassName('progress')[0] as HTMLElement).style.width = progress;
 }

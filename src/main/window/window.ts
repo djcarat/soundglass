@@ -1,5 +1,7 @@
-import { BrowserWindow, app } from 'electron'
 import * as glasstron from 'glasstron'
+if (process.platform != "darwin")
+glasstron.init()
+import { BrowserWindow, app } from 'electron'
 import { join } from 'path'
 import { initPermissions } from '../permissions'
 
@@ -30,7 +32,7 @@ function createWindow() {
     win.loadFile(join(__dirname, '../../renderer/index.html'))
 
     glasstron.update(win, {
-        windows: {blurType: 'arcylic'},
+        windows: {blurType: 'blurbehind'},
         macos: {vibrancy: 'fullscreen-ui'},
         linux: {requrestBlur: true}
     })

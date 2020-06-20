@@ -29,13 +29,19 @@ function loadAudioDevices() {
         renderer_1.voice.setSinkId(filteredOutputDevices[device].deviceId);
     });
     electron_1.ipcRenderer.on('change-input-device', (event, device) => {
-        renderer_1.mic.setSinkId(filteredOutputDevices[device].deviceId);
+        console.log(filteredInputDevices[device]);
+        renderer_1.mic.setSinkId(filteredInputDevices[device].deviceId).then(() => {
+            console.log('success (mic)');
+            setUpMic();
+        });
     });
 }
 exports.loadAudioDevices = loadAudioDevices;
+let micAudioTrack = null;
 function setUpMic() {
     navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then((stream) => {
         renderer_1.mic.srcObject = stream;
+        micAudioTrack = renderer_1.mic.srcObject.getAudioTracks()[0];
         renderer_1.voice.srcObject = stream;
     }).catch(err => console.error(err));
 }

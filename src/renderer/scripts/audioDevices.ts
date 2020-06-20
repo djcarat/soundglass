@@ -34,13 +34,20 @@ export function loadAudioDevices() {
     })
     
     ipcRenderer.on('change-input-device', (event, device: number) => {
-        (mic as any).setSinkId(filteredOutputDevices[device].deviceId)
+        console.log(filteredInputDevices[device]);
+        (mic as any).setSinkId(filteredInputDevices[device].deviceId).then(() => {
+            console.log('success (mic)')
+            setUpMic()
+        })
     })
 }
+
+let micAudioTrack: MediaStreamTrack = null;
 
 export function setUpMic() {
     navigator.mediaDevices.getUserMedia({audio: true, video: false}).then((stream) => {
         mic.srcObject = stream;
+        micAudioTrack = mic.srcObject.getAudioTracks()[0]
         voice.srcObject = stream;
     }).catch(err => console.error(err))
 }

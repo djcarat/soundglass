@@ -2,12 +2,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./scss/main.css">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; object-src 'none';">
+    <link rel="stylesheet" href="./scss/main.css">
 </head>
-<body>
+<body class="blank-popup"> 
     <div id="tabList"></div>
-    <div class="tab" id="newTab">+</div>
+    <div class="tab blank-popup" id="newTab">+</div>
+    <div id="settingsContent" class="blank-popup">
+        <div class="category" id="input">
+        <h1>Input</h1> <br/>
+        <span class="desc">Device<br/></span><select><option>USB PnP Sound Device</option></select><br/>
+        <span class="desc">Volume<br/></span><input type="range">
+        </div>
+        <div class="category" id="output">
+        <h1>Output</h1> <br/>
+        <span class="desc">Device<br/></span><select><option>ATH SR50 BT</option></select><br/>
+        <span class="desc">Volume<br/></span><input type="range">
+        </div>
+        <div id="credits">
+            Made by Maksymilian "pixl" Sroka.<br/>
+            <span class="link">Source</span> \\ <span class="link">Website</span>
+        </div>
+    </div>
+    <div class="tab blank-popup" id="settings"><i class="arrow down"></i></div>
     <audio id="sound"></audio>
     <audio id="voice" autoplay></audio>
     <audio id="mic" muted></audio>

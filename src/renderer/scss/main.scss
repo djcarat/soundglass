@@ -1,6 +1,10 @@
+@import "./tabs.css";
+@import "./icons.css";
+@import "./settings.css";
+
 @font-face {
-    src: "../../assets/Quicksand-VariableFont_wght.ttf";
     font-family: "Quicksand";
+    src: url("../../assets/Quicksand-Regular.ttf");
 }
 
 * {
@@ -22,8 +26,8 @@
 }
 
 @keyframes fadeIn {
-    from { width: 0; opacity: 0; }
-    to { width: 100vw; opacity: 1; }
+    from { opacity: 0; transform: scale(0) }
+    to { opacity: 1; transform: scale(1) }
 }
 
 html,
@@ -34,70 +38,5 @@ body {
     -webkit-user-select: none;
     height: 100vh;
     width: 100vw;
-}
-
-.tabList {
-    width: 100vw;
-    min-height: 100%;
-}
-
-.tab {
-    width: 100vw;
-    height: 50px;
-    border-bottom: 1px solid rgba(20, 20, 20, 0.3);
-    line-height: 50px;
-    padding-left: 15px;
-    animation: fadeIn 0.4s;
-    cursor: pointer;
-    overflow: hidden;
-    text-align: center;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-
-    &:hover {
-        background-color: rgba(0, 0, 0, 0.1);
-    }
-
-    .shortcut {
-        float: right;
-        color: rgb(180, 180, 180);
-        padding-left: 15px;
-        padding-right: 15px;
-
-        &:hover {
-            color: white;
-        }
-    }
-
-    .title {
-        float: left;
-        outline: none;
-        border: none;
-        pointer-events: none;
-    }
-
-    .progress {
-        width: 0;
-        height: 1px;
-        border-radius: 1px;
-        background-image: linear-gradient(to right, blue, purple);;
-        display: none;
-        position: absolute;
-        left: 0;
-        margin-top: 49px;
-    }
-
-    &.active {
-        .progress {
-            display: block;
-        }
-        background-color: rgba(0, 0, 0, 0.1);
-    }
-
-    &#newTab {
-        border: none;
-        font-size: 20px;
-        color: rgb(180, 180, 180);
-        font-family: 'Quicksand';
-    }
+    background-color: rgba(0, 0, 0, 0.2);
 }

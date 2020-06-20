@@ -1,0 +1,72 @@
+.tabList {
+  width: 100vw;
+  min-height: 100%;
+}
+
+.tab {
+  width: 100vw;
+  height: 50px;
+  border-bottom: 1px solid rgba(20, 20, 20, 0.3);
+  line-height: 50px;
+  padding-left: 15px;
+  -webkit-animation: fadeIn 0.4s;
+          animation: fadeIn 0.4s;
+  cursor: pointer;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tab:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.tab#settings {
+  border: none;
+}
+
+.tab .shortcut {
+  float: right;
+  color: #b4b4b4;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.tab .shortcut:hover {
+  color: white;
+}
+
+.tab .title {
+  float: left;
+  outline: none;
+  border: none;
+  pointer-events: none;
+}
+
+.tab .progress {
+  width: 0;
+  height: 2px;
+  border-radius: 1px;
+  background-image: -webkit-gradient(linear, left top, right top, from(blue), to(purple));
+  background-image: linear-gradient(to right, blue, purple);
+  display: none;
+  position: absolute;
+  left: 0;
+  margin-top: 49px;
+}
+
+.tab.active {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.tab.active .progress {
+  display: block;
+}
+
+.tab#newTab {
+  border: none;
+  font-size: 20px;
+  color: #b4b4b4;
+  font-family: 'Quicksand';
+}

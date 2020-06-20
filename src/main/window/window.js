@@ -1,8 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.win = void 0;
-const electron_1 = require("electron");
 const glasstron = require("glasstron");
+if (process.platform != "darwin")
+    glasstron.init();
+const electron_1 = require("electron");
 const path_1 = require("path");
 const permissions_1 = require("../permissions");
 function createWindow() {
@@ -26,7 +28,7 @@ function createWindow() {
     exports.win.webContents.on('new-window', (event) => event.preventDefault());
     exports.win.loadFile(path_1.join(__dirname, '../../renderer/index.html'));
     glasstron.update(exports.win, {
-        windows: { blurType: 'arcylic' },
+        windows: { blurType: 'blurbehind' },
         macos: { vibrancy: 'fullscreen-ui' },
         linux: { requrestBlur: true }
     });
