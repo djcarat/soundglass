@@ -1,5 +1,6 @@
 import { app, Menu, ipcMain } from "electron";
 import { openSoundFileDialog } from "../dialog";
+import { win } from "./window";
 
 app.whenReady().then(initContextMenu)
 
@@ -12,9 +13,15 @@ function initContextMenu() {
     tabMenu = new Menu()
 
     const tabTemplate = [
-        { label: 'Remove Sound' },
+        { 
+            label: 'Remove Sound',
+            click: () => win.webContents.send('remove-tab')
+        },
         { type: 'separator' },
-        isMac ? { label: 'Reveal in Finder' } : { label: 'Show in Explorer' }
+        isMac ? { 
+            label: 'Reveal in Finder',
+            click: () => win.webContents.send('show-tab-in-folder')
+        } : { label: 'Show in Explorer' }
     ]
 
     //@ts-ignore

@@ -1,3 +1,5 @@
+@import "./variables.scss";
+
 #settingsContent {
     width: 100vw;
     transform: scale(0);
@@ -12,29 +14,66 @@
         width: 100%;
         height: auto;
         text-align: left;
-        border-left: 1px solid rgba(20, 20, 20, 0.8);
+        border-left: 1px solid transparent;
         padding: 15px;
 
         .desc {
             font-size: 14px;
-            height: 18px;
             width: 100%;
             text-align: left;
             display: inline-block;
+            color: $color-text-dark;
         }
 
-        &#output {
+        &#input {
+            border-color: rgba(100, 100, 100, 0.8);
+        }
+
+        &#output1 {
+            border-color: rgba(80, 80, 80, 0.8);
+        }
+
+        &#output2 {
             border-color: rgba(60, 60, 60, 0.8);
         }
-        
-        &#input {
-            border-color: rgba(80, 80, 80, 0.8);
+
+        .explanation {
+            font-size: 15px;
+            color: $color-text-darker;
+        }
+
+        label {
+            width: 20px;
+            height: 20px;
+            outline: none;
+            background-color: $color-background;
+            border-radius: 3px;
+            cursor: pointer;
+            display: inline-block;
+            line-height: 18px;
+            vertical-align: middle;
+            margin-left: 3px;
+            text-align: center;
+            font-size: 0;
+            border: 1px solid $color-background-dark;
+        }
+
+        input[type="checkbox"]:checked + label {
+            font-size: 14px;
+        }
+
+        input[type="checkbox"]:hover + label {
+            background-color: $color-background-light;
+        }
+
+        input[type="checkbox"] {
+            display: none;
         }
 
         input[type="range"] {
             appearance: none;
             outline: none;
-            background-color: rgba(80, 80, 80, 0.8);
+            background-color: $color-background;
             border-radius: 20px;
             height: 5px;
             cursor: pointer;
@@ -44,15 +83,16 @@
             appearance: none;
             outline: none;
             padding: 5px;
-            background-color: rgba(40, 40, 40, 0.8);
+            background-color: $color-background;
             border-radius: 3px;
             border: none;
-            color: rgba(120, 120, 120, 0.8);
+            color: $color-text-darker;
             cursor: pointer;
             transition: color ease-in-out 0.03s;
+            border: 2px solid $color-background-dark;
 
             &:hover {
-                color: rgba(190, 190, 190, 0.9)
+                color: $color-text-dark;
             }
         }
 
@@ -61,17 +101,17 @@
             width: 15px;
             height: 15px;
             border-radius: 20px;
-            background-color: rgba(120, 120, 120, 0.9);
+            background-color: $color-text-darker;
             cursor: pointer;
 
             &:hover {
-                background-color: rgba(140, 140, 140, 0.9);
+                background-color: $color-text-dark;
             }
         }
     }
 
     #credits {
-        color: rgb(120, 120, 120);
+        color: $color-text-darker;
         height: 25px;
         width: 100%;
         line-height: 27px;
@@ -81,7 +121,7 @@
             border-bottom: 1px solid transparent;
             
             &:hover {
-                border-image: linear-gradient(to right, rgb(39, 158, 255) , rgb(45, 48, 255));
+                border-image: $color-link-border;
                 border-image-slice: 1;
             }
         }
@@ -89,7 +129,7 @@
 
     &.active {
         opacity: 1;
-        height: 400px;
+        height: 510px;
         transform: scale(1);
         padding-top: 15px;
     }

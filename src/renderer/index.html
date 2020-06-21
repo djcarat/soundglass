@@ -6,27 +6,38 @@
     <link rel="stylesheet" href="./scss/main.css">
 </head>
 <body class="blank-popup"> 
+    <div id="topbar">
+        <div class="top-icon" id="minimize">&#xE921;</div>
+        <div class="top-icon" id="resize">&#xE922;</div>
+        <div class="top-icon" id="close">&#xE8BB;</div>
+    </div>
     <div id="tabList"></div>
     <div class="tab blank-popup" id="newTab">+</div>
     <div id="settingsContent" class="blank-popup">
-        <div class="category" id="input">
-        <h1>Input</h1> <br/>
-        <span class="desc">Device<br/></span><select><option>USB PnP Sound Device</option></select><br/>
-        <span class="desc">Volume<br/></span><input type="range">
+        <div class="category blank-popup" id="input">
+            <h1 class="blank-popup">Input</h1> <br/>
+            <span class="desc inline" id="mute-text">Mute Microphone<input type="checkbox" id="mute" name="mute"><label for="mute">x</label></span>
         </div>
-        <div class="category" id="output">
-        <h1>Output</h1> <br/>
-        <span class="desc">Device<br/></span><select><option>ATH SR50 BT</option></select><br/>
-        <span class="desc">Volume<br/></span><input type="range">
+        <div class="category blank-popup" id="output1">
+        <h1 class="blank-popup">Output 1 <span class="explanation blank-popup">(Virtual Audio Device)</span></h1> <br/>
+        <span class="desc blank-popup">Device<br/></span><select id="output-select-1"></select><br/>
+        <span class="desc blank-popup">Volume<br/></span><input id="output-range-1" type="range" value="100">
         </div>
-        <div id="credits">
+        <div class="category blank-popup" id="output2">
+        <h1 class="blank-popup">Output 2 <span class="explanation blank-popup">(Your Speakers)</span></h1> <br/>
+        <span class="desc blank-popup">Device<br/></span><select id="output-select-2"></select><br/>
+        <span class="desc blank-popup">Volume<br/></span><input id="output-range-2" type="range" value="100">
+        </div>
+        <div id="credits" class="blank-popup">
             Made by Maksymilian "pixl" Sroka.<br/>
-            <span class="link">Source</span> \\ <span class="link">Website</span>
+            <span class="link" id="source">Source</span> \\ <span class="link" id="website">Website</span>
         </div>
     </div>
     <div class="tab blank-popup" id="settings"><i class="arrow down"></i></div>
     <audio id="sound"></audio>
     <audio id="voice" autoplay></audio>
+    <audio id="sound-2"></audio>
+    <audio id="voice-2" autoplay></audio>
     <audio id="mic" muted></audio>
 </body>
 </html>

@@ -36,6 +36,7 @@
     "typescript": "^3.9.5"
   },
   "dependencies": {
+    "electron-store": "^5.2.0",
     "glasstron": "0.0.3"
   }
 }

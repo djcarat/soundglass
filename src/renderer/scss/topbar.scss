@@ -1,0 +1,36 @@
+@import "./variables.scss";
+
+#topbar {
+    display: none;
+    width: 100vw;
+    height: 25px;
+    background-color: rgb(30, 30, 30);
+    -webkit-app-region: drag;
+    user-select: none;
+    border-bottom: 1px solid $color-background;
+    font-family: 'Segoe MDL2 Assets';
+    text-align: right;
+    position: relative;
+    line-height: 25px;
+    color: $color-text-darker;
+    font-size: 0;
+
+    &.active {
+        display: block;
+    }
+
+    .top-icon {
+        height: 100%;
+        width: 25px;
+        text-align: center;
+        display: inline-block;
+        vertical-align: middle;
+        font-size: 15px;
+        -webkit-app-region: no-drag;
+
+        &:hover {
+            color: $color-text-dark;
+            background-color: $color-background-light;
+        }
+    }
+}

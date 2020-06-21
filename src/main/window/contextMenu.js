@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const electron_1 = require("electron");
 const dialog_1 = require("../dialog");
+const window_1 = require("./window");
 electron_1.app.whenReady().then(initContextMenu);
 let tabMenu;
 let blankMenu;
@@ -9,9 +10,15 @@ function initContextMenu() {
     let isMac = process.platform === "darwin";
     tabMenu = new electron_1.Menu();
     const tabTemplate = [
-        { label: 'Remove Sound' },
+        {
+            label: 'Remove Sound',
+            click: () => window_1.win.webContents.send('remove-tab')
+        },
         { type: 'separator' },
-        isMac ? { label: 'Reveal in Finder' } : { label: 'Show in Explorer' }
+        isMac ? {
+            label: 'Reveal in Finder',
+            click: () => window_1.win.webContents.send('show-tab-in-folder')
+        } : { label: 'Show in Explorer' }
     ];
     //@ts-ignore
     tabMenu = electron_1.Menu.buildFromTemplate(tabTemplate);

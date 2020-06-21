@@ -1,3 +1,5 @@
+@import "./variables.scss";
+
 .tabList {
     width: 100vw;
     min-height: 100%;
@@ -9,29 +11,35 @@
     border-bottom: 1px solid rgba(20, 20, 20, 0.3);
     line-height: 50px;
     padding-left: 15px;
+    padding-right: 15px;
     animation: fadeIn 0.4s;
     cursor: pointer;
     overflow: hidden;
     text-align: center;
     text-overflow: ellipsis;
     white-space: nowrap;
+    position: relative;
+    transition: opacity ease-in-out 0.4s, transform ease-in-out 0.4s;
 
     &:hover {
-        background-color: rgba(0, 0, 0, 0.1);
+        background-color: $color-background-dark;
     }
 
     &#settings {
         border: none;
-    }    
+    }
+
+    &.removed {
+        transform: scale(0);
+        opacity: 0;
+    }
 
     .shortcut {
         float: right;
-        color: rgb(180, 180, 180);
-        padding-left: 15px;
-        padding-right: 15px;
+        color: $color-text-dark;
 
         &:hover {
-            color: white;
+            color: $color-text;
         }
     }
 
@@ -42,28 +50,36 @@
         pointer-events: none;
     }
 
+    .timer {
+        position: absolute;
+        left: 0;
+        right: 0;
+        color: $color-text-darker;
+        pointer-events: none;
+    }
+
     .progress {
         width: 0;
         height: 2px;
         border-radius: 1px;
-        background-image: linear-gradient(to right, blue, purple);;
+        background-image: $color-link-border;
         display: none;
         position: absolute;
         left: 0;
-        margin-top: 49px;
+        bottom: -1px;
     }
 
     &.active {
         .progress {
             display: block;
         }
-        background-color: rgba(0, 0, 0, 0.1);
+        background-color: $color-background-dark;
     }
 
     &#newTab {
         border: none;
         font-size: 20px;
-        color: rgb(180, 180, 180);
+        color: $color-text-dark;
         font-family: 'Quicksand';
     }
 }

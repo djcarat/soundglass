@@ -1,6 +1,8 @@
-@import "./tabs.css";
-@import "./icons.css";
-@import "./settings.css";
+@import "./tabs.scss";
+@import "./icons.scss";
+@import "./settings.scss";
+@import "./variables.scss";
+@import "./topbar.css";
 
 @font-face {
     font-family: "Quicksand";
@@ -22,7 +24,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: rgba(20, 20, 20, 0.2);
+    background-color: rgba(50, 50, 50, 0.2);
 }
 
 @keyframes fadeIn {
@@ -38,5 +40,5 @@ body {
     -webkit-user-select: none;
     height: 100vh;
     width: 100vw;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.3);
 }

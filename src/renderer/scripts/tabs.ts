@@ -1,7 +1,28 @@
-import { ipcRenderer } from 'electron'
-import { audio } from './renderer'
+import { ipcRenderer, shell } from 'electron'
+import { audio, contextMenuTarget, audio2 } from './renderer'
 
 ipcRenderer.on('create-tab', (event, filePath) => createNewTab(filePath))
+
+ipcRenderer.on('show-tab-in-folder', () => {
+    shell.showItemInFolder((contextMenuTarget.getElementsByClassName('title')[0] as HTMLElement).dataset.path.slice(7))
+})
+
+ipcRenderer.on('load-tabs', (event, tabs: string) => {
+    if (tabs !== undefined)
+    document.getElementById('tabList').innerHTML = tabs;
+})
+
+ipcRenderer.on('remove-tab', () => {
+    contextMenuTarget.classList.add('removed')
+    setTimeout(() => {
+        contextMenuTarget.remove()
+        saveTabs()
+        if ((contextMenuTarget.getElementsByClassName('title')[0] as HTMLElement).dataset.path === audio.src) {
+            audio.pause()
+            audio2.pause()
+        }
+    }, 400);
+})
 
 let isRegisteringShortcut: boolean = false
 let registerShortcutEvent: Event
@@ -14,6 +35,12 @@ onkeypress = (key) => {
 }
 
 ipcRenderer.on('global-shortcut-called', (event, shortcut: string) => {
+    if (shortcut.includes("numadd")) shortcut = shortcut.replace("numadd", "NUM+")
+    else if (shortcut.includes("numsub")) shortcut = shortcut.replace("numsub", "NUM-")
+    else if (shortcut.includes("numdec")) shortcut = shortcut.replace("numdec", "NUM.")
+    else if (shortcut.includes("numult")) shortcut = shortcut.replace("numult", "NUM*")
+    else if (shortcut.includes("numdiv")) shortcut = shortcut.replace("numdiv", "NUM/")
+
     let tabs = document.getElementsByClassName('tab');
     shortcut = shortcut.split("+").join(" ")
 
@@ -23,6 +50,10 @@ ipcRenderer.on('global-shortcut-called', (event, shortcut: string) => {
         }
     }
 })
+
+function saveTabs() {
+    ipcRenderer.send('save-tabs', document.getElementById('tabList').innerHTML)
+}
 
 export function toggleSettings() {
     let settingsIcon = document.getElementById('settings').getElementsByClassName('arrow')[0]
@@ -43,14 +74,15 @@ function createNewTab(filePath: string) {
     let tabList = document.getElementById('tabList')
 
     newTab.innerHTML = `
-    <span class="title" data-path="${filePath}">${filePath.replace(/^.*[\\\/]/, '').split('.').shift()}</span>
-    <span class="shortcut">NONE</span>
-    <div class="progress"></div>`
-    newTab.classList.add('tab')
-    newTab.classList.add('tab-popup')
-    newTab.onclick = () => tabClick(newTab);
-    (newTab.getElementsByClassName('shortcut')[0] as HTMLElement).onclick = (event) => startRegisteringShortcut(event)
-    tabList.appendChild(newTab)
+        <span class="title" data-path="${filePath}">${filePath.replace(/^.*[\\\/]/, '').split('.').shift()}</span>
+        <span class="shortcut">NONE</span>
+        <div class="progress"></div>`
+        newTab.classList.add('tab')
+        newTab.classList.add('tab-popup')
+        newTab.onclick = () => tabClick(newTab);
+        (newTab.getElementsByClassName('shortcut')[0] as HTMLElement).onclick = (event) => startRegisteringShortcut(event)
+        tabList.appendChild(newTab)
+        saveTabs()
 }
 
 function startRegisteringShortcut(event: Event) {
@@ -75,12 +107,14 @@ function registerShortcut(key: KeyboardEvent) {
         shortcut += "Space"   
     }
 
+    if (key.code === "NumpadEnter") return;
+
     shortcut += `${key.key}`
     shortcut = shortcut.toUpperCase();
 
     (registerShortcutEvent.target as HTMLElement).innerText = shortcut;
 
-    let shortcutToSend = shortcut;
+    let shortcutToSend = shortcut
     shortcutToSend = shortcutToSend.split(" ").join("+")
 
     ipcRenderer.send('register-global-shortcut', shortcutToSend)
@@ -90,9 +124,11 @@ function tabClick(el: HTMLElement) {
     if (el.classList.contains('active')) {
         el.classList.remove('active')
         audio.pause()
+        audio2.pause()
     }
     else {
         disableAllActiveTabs()
+        registerTabsEvents()
         el.classList.toggle('active')
         audio.src = (el.getElementsByClassName('title')[0] as HTMLElement).dataset.path
         audio.currentTime = 0
@@ -102,12 +138,17 @@ function tabClick(el: HTMLElement) {
             alert(`Couldn't load file "${audio.src}" :(
                 Try to import this file again.`)
         })
+        audio2.src = (el.getElementsByClassName('title')[0] as HTMLElement).dataset.path
+        audio2.currentTime = 0
+        audio2.load()
+        audio2.play()
     }
 }
 
 export function setAudioListeners() {
+    let active = document.getElementById('tabList').getElementsByClassName('active')
     setInterval(() => {
-        if (document.getElementsByClassName('active').length < 0) return
+        if (active.length <= 0) return
 
         if (audio.paused) {
             setProgressLevel('0')
@@ -118,15 +159,23 @@ export function setAudioListeners() {
     }, 1)
 }
 
-export function disableAllActiveTabs() {
-    for (let i = 0; i < document.getElementsByClassName('tab').length; i++) {
-        let element = document.getElementsByClassName('tab')[i]
+function registerTabsEvents() {
+    for (let i = 0; i < document.getElementById('tabList').getElementsByClassName('tab').length; i++) {
+        let element = document.getElementById('tabList').getElementsByClassName('tab')[i] as HTMLElement
+        element.onclick = () => tabClick(element)
+    }
+}
 
+export function disableAllActiveTabs() {
+    for (let i = 0; i < document.getElementById('tabList').getElementsByClassName('tab').length; i++) {
+        let element = document.getElementById('tabList').getElementsByClassName('tab')[i]
         element.classList.remove('active')
     }
 }
 
 export function setProgressLevel(progress: string) {
-    if (document.getElementById('tabList').getElementsByClassName('active').length > 0)
-    (document.getElementsByClassName('active')[0].getElementsByClassName('progress')[0] as HTMLElement).style.width = progress;
+    let active = document.getElementById('tabList').getElementsByClassName('active');
+    if (active.length > 0) {
+        (active[0].getElementsByClassName('progress')[0] as HTMLElement).style.width = progress;
+    }
 }

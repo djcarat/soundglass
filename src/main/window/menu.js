@@ -22,12 +22,6 @@ const template = [
         label: 'File',
         submenu: [
             { label: 'Import Sound', click: () => dialog_1.openSoundFileDialog() },
-            { type: 'separator' },
-            { label: 'Save Config' },
-            { label: 'Save Config As..' },
-            { type: 'separator' },
-            { label: 'Load Config' },
-            { type: 'separator' },
         ]
     },
     {
@@ -56,34 +50,36 @@ const template = [
         ]
     },
 ];
-electron_1.ipcMain.on('register-output-devices', (event, audioDevices) => {
-    registerDevices('output', audioDevices);
+electron_1.ipcMain.on('change-output-menu', (event, outputId, device) => {
+    try {
+        menu.getMenuItemById(`${outputId}-${device}`).click();
+    }
+    catch (err) {
+        console.error(err);
+    }
 });
-electron_1.ipcMain.on('register-input-devices', (event, audioDevices) => {
-    registerDevices('input', audioDevices);
+electron_1.ipcMain.on('register-output-devices-1', (event, audioDevices) => {
+    registerDevices(1, audioDevices);
 });
-function registerDevices(type, audioDevices) {
+electron_1.ipcMain.on('register-output-devices-2', (event, audioDevices) => {
+    registerDevices(2, audioDevices);
+});
+function registerDevices(id, audioDevices) {
     if (process.platform != "darwin")
         return;
     let newSubmenu = [];
-    if (type === "input") {
-        newSubmenu.push({
-            label: 'Mute Microphone',
-            type: 'checkbox',
-        });
-        newSubmenu.push({ type: 'separator' });
-    }
     for (const device of audioDevices) {
         newSubmenu.push({
             label: device,
             type: 'radio',
+            id: `${id}-${audioDevices.indexOf(device)}`,
             click: () => {
-                window_1.win.webContents.send(`change-${type}-device`, audioDevices.indexOf(device));
+                window_1.win.webContents.send(`change-output-device-${id}`, audioDevices.indexOf(device));
             }
         });
     }
     let menuItem = new electron_1.MenuItem({
-        label: type.charAt(0).toUpperCase() + type.slice(1),
+        label: `Output ${id}`,
         submenu: newSubmenu
     });
     menu.insert(2, menuItem);

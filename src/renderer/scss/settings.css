@@ -17,24 +17,61 @@
   width: 100%;
   height: auto;
   text-align: left;
-  border-left: 1px solid rgba(20, 20, 20, 0.8);
+  border-left: 1px solid transparent;
   padding: 15px;
 }
 
 #settingsContent .category .desc {
   font-size: 14px;
-  height: 18px;
   width: 100%;
   text-align: left;
   display: inline-block;
-}
-
-#settingsContent .category#output {
-  border-color: rgba(60, 60, 60, 0.8);
+  color: #b4b4b4;
 }
 
 #settingsContent .category#input {
+  border-color: rgba(100, 100, 100, 0.8);
+}
+
+#settingsContent .category#output1 {
   border-color: rgba(80, 80, 80, 0.8);
+}
+
+#settingsContent .category#output2 {
+  border-color: rgba(60, 60, 60, 0.8);
+}
+
+#settingsContent .category .explanation {
+  font-size: 15px;
+  color: #787878;
+}
+
+#settingsContent .category label {
+  width: 20px;
+  height: 20px;
+  outline: none;
+  background-color: rgba(40, 40, 40, 0.8);
+  border-radius: 3px;
+  cursor: pointer;
+  display: inline-block;
+  line-height: 18px;
+  vertical-align: middle;
+  margin-left: 3px;
+  text-align: center;
+  font-size: 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+#settingsContent .category input[type="checkbox"]:checked + label {
+  font-size: 14px;
+}
+
+#settingsContent .category input[type="checkbox"]:hover + label {
+  background-color: rgba(60, 60, 60, 0.8);
+}
+
+#settingsContent .category input[type="checkbox"] {
+  display: none;
 }
 
 #settingsContent .category input[type="range"] {
@@ -42,7 +79,7 @@
      -moz-appearance: none;
           appearance: none;
   outline: none;
-  background-color: rgba(80, 80, 80, 0.8);
+  background-color: rgba(40, 40, 40, 0.8);
   border-radius: 20px;
   height: 5px;
   cursor: pointer;
@@ -57,14 +94,15 @@
   background-color: rgba(40, 40, 40, 0.8);
   border-radius: 3px;
   border: none;
-  color: rgba(120, 120, 120, 0.8);
+  color: #787878;
   cursor: pointer;
   -webkit-transition: color ease-in-out 0.03s;
   transition: color ease-in-out 0.03s;
+  border: 2px solid rgba(0, 0, 0, 0.1);
 }
 
 #settingsContent .category select:hover {
-  color: rgba(190, 190, 190, 0.9);
+  color: #b4b4b4;
 }
 
 #settingsContent .category ::-webkit-slider-thumb {
@@ -73,12 +111,12 @@
   width: 15px;
   height: 15px;
   border-radius: 20px;
-  background-color: rgba(120, 120, 120, 0.9);
+  background-color: #787878;
   cursor: pointer;
 }
 
 #settingsContent .category ::-webkit-slider-thumb:hover {
-  background-color: rgba(140, 140, 140, 0.9);
+  background-color: #b4b4b4;
 }
 
 #settingsContent #credits {
@@ -94,15 +132,15 @@
 }
 
 #settingsContent #credits .link:hover {
-  -o-border-image: linear-gradient(to right, #279eff, #2d30ff);
-     border-image: -webkit-gradient(linear, left top, right top, from(#279eff), to(#2d30ff));
-     border-image: linear-gradient(to right, #279eff, #2d30ff);
+  -o-border-image: linear-gradient(to right, #ff27db, #9911e7);
+     border-image: -webkit-gradient(linear, left top, right top, from(#ff27db), to(#9911e7));
+     border-image: linear-gradient(to right, #ff27db, #9911e7);
   border-image-slice: 1;
 }
 
 #settingsContent.active {
   opacity: 1;
-  height: 400px;
+  height: 510px;
   -webkit-transform: scale(1);
           transform: scale(1);
   padding-top: 15px;
