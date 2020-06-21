@@ -1,5 +1,5 @@
 # Soundglass
-Is a cross-platform Soundboard that play sound from your computer to your favourite voice chat app :rocket:
+Is a cross-platform Soundboard that play sound from audio files on your computer to your favourite voice chat app :rocket:
 
 ![Soundglass Image](https://github.com/pixldev/soundglass/blob/master/soundglass_image3.png)
 
