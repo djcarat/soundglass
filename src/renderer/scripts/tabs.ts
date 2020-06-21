@@ -82,6 +82,9 @@ function createNewTab(filePath: string) {
         <div class="progress"></div>`
         newTab.classList.add('tab')
         newTab.classList.add('tab-popup')
+        if (process.platform === "win32") {
+            newTab.classList.add('windows')
+        }
         newTab.onclick = () => tabClick(newTab);
         (newTab.getElementsByClassName('shortcut')[0] as HTMLElement).onclick = (event) => startRegisteringShortcut(event)
         tabList.appendChild(newTab)

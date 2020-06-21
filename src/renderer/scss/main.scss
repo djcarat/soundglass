@@ -2,7 +2,7 @@
 @import "./icons.scss";
 @import "./settings.scss";
 @import "./variables.scss";
-@import "./topbar.css";
+@import "./topbar.scss";
 
 @font-face {
     font-family: "Quicksand";
@@ -40,5 +40,9 @@ body {
     -webkit-user-select: none;
     height: 100vh;
     width: 100vw;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.2);
+
+    &.windows {
+        background-color: rgba(0, 0, 0, 0.8);
+    }
 }

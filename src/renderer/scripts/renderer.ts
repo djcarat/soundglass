@@ -31,6 +31,9 @@ onload = () => {
         }
         saveSettings()
     }
+    if (navigator.appVersion.indexOf("Win") != -1) {
+        document.body.classList.add('windows')
+    }
     initTopbar()
     loadAudioDevices()
     setAudioListeners()

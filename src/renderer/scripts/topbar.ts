@@ -7,6 +7,7 @@ let minimize: HTMLElement
 export function initTopbar() {
     if (process.platform != "win32") return
     document.getElementById('topbar').classList.add('active')
+    document.getElementById('tabList').classList.add('windows')
 
     close = document.getElementById('close')
     resize = document.getElementById('resize')

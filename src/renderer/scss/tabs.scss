@@ -1,14 +1,17 @@
 @import "./variables.scss";
 
-.tabList {
+#tabList {
     width: 100vw;
-    min-height: 100%;
+
+    &.windows {
+        margin-top: 22px;
+    }
 }
 
 .tab {
     width: 100vw;
     height: 50px;
-    border-bottom: 1px solid rgba(20, 20, 20, 0.3);
+    border-bottom: 1px solid rgba(10, 10, 10, 0.3);
     line-height: 50px;
     padding-left: 15px;
     padding-right: 15px;
@@ -27,6 +30,10 @@
 
     &#settings {
         border: none;
+    }
+
+    .windows {
+        border-bottom: 1px solid rgba(10, 10, 10, 0.6);
     }
 
     &.removed {
