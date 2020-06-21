@@ -1,9 +1,14 @@
 import { globalShortcut, ipcMain, app } from 'electron'
 import { win } from './window/window'
 
-function replaceNum(str: string, originalNum: string, newNum: string) {
-    return str.replace(originalNum, newNum)
-}
+ipcMain.on('unregister-global-shortcut', (event, shortcut: string) => {
+    try {
+        if (shortcut !== "NONE")
+        globalShortcut.unregister(shortcut)
+    } catch (err) {
+        console.error(err)
+    }
+})
 
 ipcMain.on('register-global-shortcut', (event, shortcut: string) => {
     console.log(shortcut)

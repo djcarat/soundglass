@@ -2,9 +2,15 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const electron_1 = require("electron");
 const window_1 = require("./window/window");
-function replaceNum(str, originalNum, newNum) {
-    return str.replace(originalNum, newNum);
-}
+electron_1.ipcMain.on('unregister-global-shortcut', (event, shortcut) => {
+    try {
+        if (shortcut !== "NONE")
+            electron_1.globalShortcut.unregister(shortcut);
+    }
+    catch (err) {
+        console.error(err);
+    }
+});
 electron_1.ipcMain.on('register-global-shortcut', (event, shortcut) => {
     console.log(shortcut);
     if (shortcut.includes("NUM+"))

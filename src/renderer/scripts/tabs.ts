@@ -8,14 +8,17 @@ ipcRenderer.on('show-tab-in-folder', () => {
 })
 
 ipcRenderer.on('load-tabs', (event, tabs: string) => {
-    if (tabs !== undefined)
-    document.getElementById('tabList').innerHTML = tabs;
+    if (tabs !== undefined) {
+        document.getElementById('tabList').innerHTML = tabs;
+        registerTabsEvents()
+    }
 })
 
 ipcRenderer.on('remove-tab', () => {
     contextMenuTarget.classList.add('removed')
     setTimeout(() => {
         contextMenuTarget.remove()
+        ipcRenderer.send('unregister-global-shortcut', (contextMenuTarget.getElementsByClassName('shortcut')[0] as HTMLElement).innerHTML)
         saveTabs()
         if ((contextMenuTarget.getElementsByClassName('title')[0] as HTMLElement).dataset.path === audio.src) {
             audio.pause()
@@ -88,12 +91,13 @@ function createNewTab(filePath: string) {
 function startRegisteringShortcut(event: Event) {
     event.stopPropagation();
     if (isRegisteringShortcut) return;
+    ipcRenderer.send('unregister-global-shortcut', (event.target as HTMLElement).innerHTML);
     (event.target as HTMLElement).innerText = "Register shortcut.."
     isRegisteringShortcut = true
     registerShortcutEvent = event
 }
 
-function registerShortcut(key: KeyboardEvent) {
+function registerShortcut(key: KeyboardEvent, isLoading?: boolean) {
     let shortcut = "";
     if (key.ctrlKey) shortcut += "Ctrl "
     if (key.altKey) shortcut += "Alt "
@@ -112,12 +116,14 @@ function registerShortcut(key: KeyboardEvent) {
     shortcut += `${key.key}`
     shortcut = shortcut.toUpperCase();
 
+    if (!isLoading)
     (registerShortcutEvent.target as HTMLElement).innerText = shortcut;
 
     let shortcutToSend = shortcut
     shortcutToSend = shortcutToSend.split(" ").join("+")
 
     ipcRenderer.send('register-global-shortcut', shortcutToSend)
+    saveTabs()
 }
 
 function tabClick(el: HTMLElement) {
@@ -128,7 +134,6 @@ function tabClick(el: HTMLElement) {
     }
     else {
         disableAllActiveTabs()
-        registerTabsEvents()
         el.classList.toggle('active')
         audio.src = (el.getElementsByClassName('title')[0] as HTMLElement).dataset.path
         audio.currentTime = 0
@@ -162,7 +167,10 @@ export function setAudioListeners() {
 function registerTabsEvents() {
     for (let i = 0; i < document.getElementById('tabList').getElementsByClassName('tab').length; i++) {
         let element = document.getElementById('tabList').getElementsByClassName('tab')[i] as HTMLElement
-        element.onclick = () => tabClick(element)
+        element.onclick = () => tabClick(element);
+        (element.getElementsByClassName('shortcut')[0] as HTMLElement).onclick = (event) => startRegisteringShortcut(event)
+        let key = new KeyboardEvent("keypress", {key: (element.getElementsByClassName('shortcut')[0] as HTMLElement).innerHTML})
+        registerShortcut(key, true)
     }
 }
 

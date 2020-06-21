@@ -8,13 +8,16 @@ electron_1.ipcRenderer.on('show-tab-in-folder', () => {
     electron_1.shell.showItemInFolder(renderer_1.contextMenuTarget.getElementsByClassName('title')[0].dataset.path.slice(7));
 });
 electron_1.ipcRenderer.on('load-tabs', (event, tabs) => {
-    if (tabs !== undefined)
+    if (tabs !== undefined) {
         document.getElementById('tabList').innerHTML = tabs;
+        registerTabsEvents();
+    }
 });
 electron_1.ipcRenderer.on('remove-tab', () => {
     renderer_1.contextMenuTarget.classList.add('removed');
     setTimeout(() => {
         renderer_1.contextMenuTarget.remove();
+        electron_1.ipcRenderer.send('unregister-global-shortcut', renderer_1.contextMenuTarget.getElementsByClassName('shortcut')[0].innerHTML);
         saveTabs();
         if (renderer_1.contextMenuTarget.getElementsByClassName('title')[0].dataset.path === renderer_1.audio.src) {
             renderer_1.audio.pause();
@@ -84,11 +87,12 @@ function startRegisteringShortcut(event) {
     event.stopPropagation();
     if (isRegisteringShortcut)
         return;
+    electron_1.ipcRenderer.send('unregister-global-shortcut', event.target.innerHTML);
     event.target.innerText = "Register shortcut..";
     isRegisteringShortcut = true;
     registerShortcutEvent = event;
 }
-function registerShortcut(key) {
+function registerShortcut(key, isLoading) {
     let shortcut = "";
     if (key.ctrlKey)
         shortcut += "Ctrl ";
@@ -106,10 +110,12 @@ function registerShortcut(key) {
         return;
     shortcut += `${key.key}`;
     shortcut = shortcut.toUpperCase();
-    registerShortcutEvent.target.innerText = shortcut;
+    if (!isLoading)
+        registerShortcutEvent.target.innerText = shortcut;
     let shortcutToSend = shortcut;
     shortcutToSend = shortcutToSend.split(" ").join("+");
     electron_1.ipcRenderer.send('register-global-shortcut', shortcutToSend);
+    saveTabs();
 }
 function tabClick(el) {
     if (el.classList.contains('active')) {
@@ -119,7 +125,6 @@ function tabClick(el) {
     }
     else {
         disableAllActiveTabs();
-        registerTabsEvents();
         el.classList.toggle('active');
         renderer_1.audio.src = el.getElementsByClassName('title')[0].dataset.path;
         renderer_1.audio.currentTime = 0;
@@ -154,6 +159,9 @@ function registerTabsEvents() {
     for (let i = 0; i < document.getElementById('tabList').getElementsByClassName('tab').length; i++) {
         let element = document.getElementById('tabList').getElementsByClassName('tab')[i];
         element.onclick = () => tabClick(element);
+        element.getElementsByClassName('shortcut')[0].onclick = (event) => startRegisteringShortcut(event);
+        let key = new KeyboardEvent("keypress", { key: element.getElementsByClassName('shortcut')[0].innerHTML });
+        registerShortcut(key, true);
     }
 }
 function disableAllActiveTabs() {
