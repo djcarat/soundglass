@@ -19,8 +19,7 @@ onload = () => {
     voice2 = document.getElementById('voice-2') as HTMLAudioElement
     document.getElementById('newTab').onclick = () => openSoundFileDialog()
     document.getElementById('settings').onclick = () => toggleSettings()
-    document.getElementById('source').onclick = () => OpenURL("https://github.com/")
-    document.getElementById('website').onclick = () => OpenURL("https://duckduckgo.com/")
+    document.getElementById('source').onclick = () => OpenURL("https://github.com/pixldev/soundglass")
     document.getElementById('mute').onchange = () => {
         if ((document.getElementById('mute') as HTMLInputElement).checked) {
             voice.muted = true

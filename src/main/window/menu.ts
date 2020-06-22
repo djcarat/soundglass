@@ -1,4 +1,4 @@
-import { app, Menu, ipcMain, MenuItem } from "electron";
+import { app, Menu, ipcMain, MenuItem, shell } from "electron";
 import { win } from './window'
 import { openSoundFileDialog } from "../dialog";
 
@@ -43,9 +43,10 @@ const template = [
     {
         role: 'help',
         submenu: [
-            { label: 'Report an issue' },
-            { role: 'reload' },
-            { role: 'toggledevtools' }
+            { 
+                label: 'Report an issue',
+                click: () => shell.openExternal('https://github.com/pixldev/soundglass/issues')
+             },
         ]
     },
 ]

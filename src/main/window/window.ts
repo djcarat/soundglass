@@ -1,7 +1,7 @@
 import * as glasstron from 'glasstron'
 if (process.platform != "darwin")
 glasstron.init()
-import { BrowserWindow, app, ipcMain } from 'electron'
+import { BrowserWindow, app, ipcMain, nativeImage } from 'electron'
 import { join } from 'path'
 import { initPermissions } from '../permissions'
 import { store } from '../store'
@@ -18,15 +18,19 @@ function createWindow() {
         minHeight: 200,
         title: 'Soundglass',
         show: false,
+        icon: nativeImage.createFromPath(join(__dirname, '../../assets/icon.png')),
         frame: isWin ? false : true,
         webPreferences: {
             preload: join(__dirname, '../../renderer/scripts/renderer.js'),
             enableRemoteModule: false,
             contextIsolation: true,
-            devTools: true,
+            devTools: false,
         }
     })
     
+    if (process.platform === "darwin")
+    app.dock.setIcon(nativeImage.createFromPath(join(__dirname, '../../assets/icon.png')))
+
     initPermissions()
 
     if (store.has('win-bounds')) {
