@@ -1,10 +1,17 @@
 import * as glasstron from 'glasstron'
-if (process.platform != "darwin")
-glasstron.init()
+import { store } from '../store'
+if (process.platform != "darwin") {
+    if (store.has("transparency")) {
+        if (store.get("transparency") == true) {
+            glasstron.init();
+        }
+    } else {
+        glasstron.init();
+    }
+}
 import { BrowserWindow, app, ipcMain, nativeImage } from 'electron'
 import { join } from 'path'
 import { initPermissions } from '../permissions'
-import { store } from '../store'
 
 export let win: BrowserWindow | null
 
@@ -53,6 +60,25 @@ function createWindow() {
         macos: {vibrancy: 'fullscreen-ui'},
         linux: {requrestBlur: true}
     })
+
+    if (process.platform != "darwin") {
+        win.setThumbarButtons([
+            {
+                tooltip: 'Toggle Transparency',
+                icon: nativeImage.createFromPath(join(__dirname, '../../assets/icon.png')),
+                click: () => toggleTransparency(),
+            }
+        ])
+    }
+}
+
+export function toggleTransparency() {
+    if (store.get("transparency"))
+        store.set("transparency", false)
+    else
+        store.set("transparency", true)
+
+    app.quit();
 }
 
 ipcMain.on('close', () => {

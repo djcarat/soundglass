@@ -1,6 +1,8 @@
 import { app, Menu, ipcMain, MenuItem, shell } from "electron";
 import { win } from './window'
 import { openSoundFileDialog } from "../dialog";
+import { toggleTransparency } from "./window";
+import { join } from "path";
 
 const template = [
     {
@@ -38,6 +40,7 @@ const template = [
             { role: 'zoom' },
             { type: 'separator' },
             { role: 'front' },
+            { type: 'separator' },
           ]
     },
     {
