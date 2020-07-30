@@ -35,6 +35,3 @@ Is a cross-platform Soundboard that play sound from audio files on your computer
 6. Run `npm run dev`
 
 Warning: App may crash if you use Visual Studio Code terminal on macOS. It's recommended to use the default OS terminal.
-
-## Note
-Linux support coming soon!
