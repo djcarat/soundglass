@@ -1,14 +1,4 @@
-import * as glasstron from 'glasstron'
 import { store } from '../store'
-if (process.platform != "darwin") {
-    if (store.has("transparency")) {
-        if (store.get("transparency") == true) {
-            glasstron.init();
-        }
-    } else {
-        glasstron.init();
-    }
-}
 import { BrowserWindow, app, ipcMain, nativeImage } from 'electron'
 import { join } from 'path'
 import { initPermissions } from '../permissions'
@@ -54,12 +44,6 @@ function createWindow() {
     win.on('unmaximize', () => win.webContents.send('win-state-change', false))
 
     win.loadFile(join(__dirname, '../../renderer/index.html'))
-
-    glasstron.update(win, {
-        windows: {blurType: 'blurbehind'},
-        macos: {vibrancy: 'fullscreen-ui'},
-        linux: {requrestBlur: true}
-    })
 
     if (process.platform != "darwin") {
         win.setThumbarButtons([
